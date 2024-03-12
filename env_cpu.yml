@@ -1,0 +1,28 @@
+name: v_prism_cpu
+channels:
+- conda-forge
+- pytorch
+- pyg
+- defaults
+dependencies:
+- python>=3.10
+- numpy
+- matplotlib
+- scipy
+- requests
+- tqdm
+- trimesh
+- scikit-image
+- pytorch::pytorch
+- jupyter
+- pyg::pyg
+- pyg::pytorch-cluster
+- conda-forge::rtree
+- opencv
+- pytorch::torchvision
+- pip
+- pip:
+  - pyglet<2
+  - point-cloud-utils
+
+  

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "v_prism"
+authors = [
+    {name = "Herbert Wright", email = "u1331078@utah.edu"},
+]
+description = "VPRISM: Probabilistic Mapping of Unknown Tabletop Scenes"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["bayesian hilbert maps", "reconstruction"]
+license = {text = "BSD-3-Clause"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dynamic = ["version"]
+
+
+
