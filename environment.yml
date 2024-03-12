@@ -3,7 +3,6 @@ channels:
 - conda-forge
 - nvidia
 - pytorch
-- esri
 - defaults
 - pyg
 dependencies:
@@ -18,18 +17,14 @@ dependencies:
 - tqdm
 - trimesh
 - scikit-image
-- pyyaml
 - jupyter
 - pyg::pytorch-cluster
 - pyg::pyg
-- pyquaternion
 - conda-forge::rtree
 - opencv
-- conda-forge::pybullet 
 - pip
 - pip:
   - pyglet<2
   - point-cloud-utils
-  - PyMCubes
 
   

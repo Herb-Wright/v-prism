@@ -13,20 +13,35 @@ from ..utils.data_download import download_file_from_google_drive, unzip_tar_fil
 from .scene import Scene
 
 
-# # https://drive.google.com/file/d/1HDJYidwxm0CiIHUvjyzCIJsC5jp1VNj2/view?usp=drive_link
-# def download_simple_ycb_dataset(data_dir = DATA_DIR) -> None:
-#     tar_file_path = os.path.join(data_dir, "gsdf_bullet_ycb_data.tar.xz")
-#     file_path = os.path.join(data_dir, "gsdf_bullet_ycb_train")
-#     if not os.path.exists(file_path):
-#         try:
-#             if not os.path.exists(tar_file_path):
-#                 print("Downloading gsdf_bullet_ycb_data dataset from google drive.")
-#                 download_file_from_google_drive("1HDJYidwxm0CiIHUvjyzCIJsC5jp1VNj2", tar_file_path, verbose=True)
-#             print("Extracting downloading gsdf_bullet_ycb_data .tar.xz file")
-#             unzip_tar_file(tar_file_path, data_dir, verbose=True, num=48804)
-#         except Exception as e:
-#             print(f"Unable to download dataset ({e})")
-#             print(e.with_traceback())
+# https://drive.google.com/file/d/1-4KgO3pz7h-sMy7VgjZID6RuzMpCywBm/view?usp=drive_link
+def download_vprism_shapenet_dataset(data_dir = DATA_DIR) -> None:
+    tar_file_path = os.path.join(data_dir, "vprism_shapenet_100.tar.xz")
+    file_path = os.path.join(data_dir, "vprism_shapenet_100")
+    if not os.path.exists(file_path):
+        try:
+            if not os.path.exists(tar_file_path):
+                print("Downloading vprism_shapenet_100 dataset from google drive.")
+                download_file_from_google_drive("1-4KgO3pz7h-sMy7VgjZID6RuzMpCywBm", tar_file_path, verbose=True)
+            print("Extracting downloading vprism_shapenet_100 .tar.xz file")
+            unzip_tar_file(tar_file_path, data_dir, verbose=True, num=2202)
+        except Exception as e:
+            print(f"Unable to download dataset ({e})")
+            print(e.with_traceback())
+
+# https://drive.google.com/file/d/1v35PNb-PFOiRGDm1eDwMqRz5uE_fx8kp/view?usp=drive_link
+def download_vprism_ycb_dataset(data_dir = DATA_DIR) -> None:
+    tar_file_path = os.path.join(data_dir, "vprism_ycb_100.tar.xz")
+    file_path = os.path.join(data_dir, "vprism_ycb_100")
+    if not os.path.exists(file_path):
+        try:
+            if not os.path.exists(tar_file_path):
+                print("Downloading vprism_ycb_100 dataset from google drive.")
+                download_file_from_google_drive("1v35PNb-PFOiRGDm1eDwMqRz5uE_fx8kp", tar_file_path, verbose=True)
+            print("Extracting downloading vprism_ycb_100 .tar.xz file")
+            unzip_tar_file(tar_file_path, data_dir, verbose=True, num=2202)
+        except Exception as e:
+            print(f"Unable to download dataset ({e})")
+            print(e.with_traceback())
 
 
 class ReconBulletDataset:

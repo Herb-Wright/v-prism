@@ -12,8 +12,6 @@ from tqdm import trange
 from skimage import measure
 import numpy as np
 
-from ..mapping.bayesian_hilbert_map import BayesianHilbertMap
-
 
 _RESOLUTION = 0.01
 
@@ -154,13 +152,6 @@ def gen_pointcloud_for_X_y(X: NDArray | Tensor, y: NDArray | Tensor) -> PointClo
     colors_for_pointcloud = colors[y.to(torch.long)]
     return PointCloud(vertices=X, colors=colors_for_pointcloud)
 
-
-def gen_pointcloud_for_hinge_points(bhm: BayesianHilbertMap) -> PointCloud:
-    P = bhm.hinge_points.shape[0]
-    # means = bhm.mu[:P]  # (P,)
-    colors = None  # TODO: this
-    # colors = np.maximum(0, np.minimum(255, np.array([[0, 100, 0]])* -1 * means.reshape((P, 1)))).astype(int)
-    return PointCloud(vertices=bhm.hinge_points.cpu().numpy(), colors=colors)
 
 
 def gen_image_of_trimesh_scene(
