@@ -3,7 +3,6 @@
 
 ![](./docs/src/images/fig1.png)
 
-
 ## Overview
 
 This is the code for the paper "V-PRISM: Probabilistic Mapping of Unknown Tabletop Scenes". Our method builds a 3D probabilistic map of a tabletop scene by using a feature transform and performing an EM algorithm. We employ a novel negative sampling technique before our feature transform to fully encode information about the scene. Our method not only reconstructs the scene accurately, but encodes valuable information about uncertainty due to occlusion. In our paper, we perform both qualitative and quantitative experiments to verify these claims. See below for a figure outlining our method.
@@ -56,15 +55,24 @@ See `./notebooks/example_demo.ipynb` for a more detailed example.
 
 **Note.** You might not be able to run objaverse experiments because I had to do some extra steps to convert certain meshes to obj files.
 
+
 ## Resources
 
 Please consider citing our work:
 
 ```
-# TODO
+@article{wright2024vprism,
+  title={V-PRISM: Probabilistic Mapping of Unknown Tabletop Scenes},
+  author={Wright, Herbert and Zhi, Weiming and Johnson-Roberson, Matthew and Hermans, Tucker},
+  journal={arXiv preprint arXiv:2403.08106},
+  year={2024}
+}
 ```
 
-See the `./docs` directory for more information
+**Links:**
+
+- [Arxiv](https://arxiv.org/abs/2403.08106)
+- [Website](https://herb-wright.github.io/v-prism/)
 
 
 

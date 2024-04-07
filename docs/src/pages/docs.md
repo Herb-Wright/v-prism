@@ -60,21 +60,22 @@ X, y = full_negative_sampling_method(
 ):
 ```
 
-
+Also checkout the example notebook: [./notebooks/example_demo.ipynb](https://github.com/Herb-Wright/v-prism/blob/main/notebooks/example_demo.ipynb)
 
 ## Running Experiments
 
 
-1. download one the following datasets:
-    - ShapeNet Scents
-    - YCB Scenes
-    - Objaverse Scenes  
-2. run the script
+1. download the items you need to run the particular experiment:
+    - ShapeNet Scenes - [download](https://drive.google.com/file/d/1-4KgO3pz7h-sMy7VgjZID6RuzMpCywBm/view?usp=drive_link)
+    - YCB Scenes - [download](https://drive.google.com/file/d/1v35PNb-PFOiRGDm1eDwMqRz5uE_fx8kp/view?usp=drive_link)
+    - Objaverse Scenes - [download](https://drive.google.com/file/d/1Z2-NPplEDUOLsRgtymlqnHs_HGnMucjt/view?usp=drive_link)
+    - ShapeNetCore.v2 Dataset - [website](https://shapenet.org/)
+    - YCB Dataset - [website](https://www.ycbbenchmarks.com/)
+    - Objaverse .obj files (Not Available)
+    - PointSDF weights - [download](https://drive.google.com/file/d/15EILzCZQ1eqfxAGxk0LeGtfBwDyDj-E9/view?usp=drive_link)
+2. run the script `python ./scripts/eval_sim_data.py` with desired arguments
 
-If you want to evaluate PointSDF: download pt file or train
-
-
-*\*Links coming soon*
+**Note.** You might not be able to run objaverse experiments because I had to do some extra steps to convert certain meshes to obj files.
 
 
 ## Project Structure
