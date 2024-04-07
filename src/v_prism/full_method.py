@@ -33,17 +33,17 @@ def full_VPRISM_method(
         dtype=points.dtype,
     ).to(device)
     kernel = GaussianKernel(kernel_param)
-    map = VPRISM(num_classes, hinge_points, kernel).to(device)
+    map = VPRISM(num_classes, hinge_points, kernel, num_iterations=3).to(device)
     X, y = full_negative_sampling_method(
-        points.to(device),
-        seg_mask.to(device),
+        points,
+        seg_mask,
         ray_step_size,
         object_sphere_radius,
-        camera_pos.to(device),
+        camera_pos,
         scene_sphere_radius,
         subsample_grid_size_unocc,
         subsample_grid_size_occ,
     )
-    map.update(X, y)
+    map.update(X.to(device), y.to(device))
     return map
 
