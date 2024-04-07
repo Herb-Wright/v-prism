@@ -1,0 +1,98 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ArxivLogo from "../images/arxiv-logo.svg";
+import GithubLogo from "../images/github-logo.svg";
+import ReconstructionImg from "../images/scene_reconstruction.png";
+import Fig1 from "../images/fig1.png";
+import UncertaintyFig from "../images/uncertainty_fig.png";
+import Fig2 from "../images/fig2.png";
+---
+
+<Layout>
+	<div class="flex flex-col w-full overflow-clip">
+		<div class="w-full px-4 pt-12 sm:pt-24 flex-col flex items-center justify-center  sm:h-[30rem] bg-white overflow-hidden">
+			<div class="w-full max-w-7xl z-10">
+				<h1 class="text-6xl sm:text-8xl tracking-wider drop-shadow-[0_0px_2px_rgb(255,255,255)] font-extralight">V-PRISM</h1>
+				<h3 class="text-2xl sm:text-3xl drop-shadow-[0_0px_2px_rgb(255,255,255)]"><u>V</u>olumetric, <u>P</u>robabilistic, and <u>R</u>obust <u>I</u>nstance <u>S</u>egmentation <u>M</u>aps</h3>
+				<div class="flex gap-4 sm:gap-6 my-6 flex-wrap z-0 relative">
+					{[
+						{label: "Arxiv", link: "https://arxiv.org/abs/2403.08106", logo: ArxivLogo}, 
+						{label: "Github", link: "https://github.com/Herb-Wright/v-prism", logo: GithubLogo},
+					].map(data =>(
+						<a href={data.link}>
+							<div class="text-xl h-10 w-28 flex items-center justify-center bg-rose-300 hover:bg-rose-200 gap-2">
+								{data.logo && <img src={data.logo.src} class="w-4"/>}
+								<div class="underline">{data.label}</div>
+							</div>
+						</a>
+					))}
+				</div>
+			</div>
+			<div class="w-full max-w-7xl h-48 sm:h- flex justify-center items-center sm:justify-end">
+				<div class="sm:float-right -top-4 sm:-top-24 flex items-center justify-center relative">
+					<img class="max-w-none  sm:w-[40rem] w-[125vw] sm:h-[40rem] sm:opacity-70 relative img_feather" src={ReconstructionImg.src}/>
+				</div>
+			</div>
+		</div>
+		<div class="bg-slate-800 flex flex-col items-center justify-center w-full overflow-clip px-4 py-12">
+			<div class="w-full max-w-7xl text-white flex flex-col gap-y-4 items-center">
+				<h2 class="text-4xl">V-PRISM: Probabilistically Mapping Unknown Tabletop Scenes</h2>
+				<h3 class="text-lg tracking-wider">Herbert Wright<sup>1</sup>, Weiming Zhi<sup>2</sup>, Matthew Johnson-Roberson<sup>2</sup>, Tucker Hermans<sup>1,3</sup></h3>
+			</div>
+			
+		</div>
+		<div class="bg-slate-700 flex flex-col items-center justify-center w-full overflow-clip px-4 py-12">
+			<div class="w-full max-w-7xl text-white flex gap-x-12 gap-y-4 flex-wrap sm:flex-nowrap">
+				<div class="min-width-full sm:min-w-64 md:min-w-96">
+					<img class="max-w-full" src={Fig1.src}/>
+				</div>
+				<div class="min-w-72 text-wrap flex flex-col gap-4">
+					<h2 class="text-3xl sm:mb-2 mt-4 sm:mt-0">Abstract</h1>
+					<p class="text-lg">
+						The ability to construct concise scene representations from sensor input is central to the field of robotics. This paper addresses the problem of robustly creating a 3D representation of a tabletop scene from a segmented RGB-D image. These representations are then critical for a range of downstream manipulation tasks. Many previous attempts to tackle this problem do not capture accurate uncertainty, which is required to subsequently produce safe motion plans. In this paper, we cast the representation of 3D tabletop scenes as a multi-class classification problem. To tackle this, we introduce V-PRISM, a framework and method for robustly creating probabilistic 3D segmentation maps of tabletop scenes. Our maps contain both occupancy estimates, segmentation information, and principled uncertainty measures. We evaluate the robustness of our method in (1) procedurally generated scenes using open-source object datasets, and (2) real-world tabletop data collected from a depth camera. Our experiments show that our approach outperforms alternative continuous reconstruction approaches that do not explicitly reason about objects in a multi-class formulation.
+					</p>
+					<div class="text-xl p-2 w-fit">
+						<a href="https://arxiv.org/pdf/2403.08106.pdf" class="hover:text-rose-200 underline visited:text-purple-200">
+							View PDF
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bg-slate-800 flex flex-col items-center justify-center w-full overflow-clip px-4 py-12 text-white">
+			<div class="max-w-7xl w-full flex flex-col items-center justify-center text-white gap-8">
+				<h2 class="text-4xl">Overview of our Method</h2>
+				<div class="w-full max-w-4xl">
+					<img class="w-full" src={Fig2.src}/>
+				</div>
+				<p class="max-w-3xl text-lg">
+					We take a segmented point cloud, generate negative samples and hingepoints in order to construct an augmented set of data. Then, we run an EM algorithm to produce a probabilistic map. This map can be used to reconstruct the objects or measure uncertainty.
+				</p>
+			</div>
+		</div>
+		<div class="bg-slate-700 flex flex-col items-center justify-center w-full overflow-clip px-4 py-12 text-white">
+			<div class="max-w-7xl w-full flex gap-8 flex-wrap sm:flex-nowrap justify-between">
+				<div class="flex flex-col gap-4 sm:gap-6 min-w-56 sm:max-w-2xl">
+					<h2 class="text-3xl">V-PRISM Captures Principled Uncertainty</h2>
+					<p class="text-lg">
+						We compare our method to a non-Bayesian version trained with gradient descent instead of our proposed EM Algorithm.
+						<b>Top row:</b> the observed point cloud with a green plane corresponding to the 2D slice where the heat maps were calculated. We compare a non-probabilistic variant of V-PRISM trained with gradient descent (<b>middle row</b>) and our method (<b>bottom row</b>). In the heat maps, the bottom is closer to the camera and the top is farther from the camera. Lighter areas correspond to more uncertainty. Our method predicts high uncertainty in occluded areas of the scene.
+					</p>
+				</div>
+				<div class="min-w-96">
+					<img src={UncertaintyFig.src}/>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</Layout>
+
+
+<style>
+	.img_feather {
+		display: block;
+		mask-image: linear-gradient(to right, transparent 0%, transparent 2%, black 12%, black 88%, transparent 98%, transparent 100%);
+	}
+</style>
+
