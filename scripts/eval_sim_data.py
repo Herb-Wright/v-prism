@@ -48,7 +48,7 @@ def print_and_maybe_log(msg: str, *, filename: str | None = None) -> None:
         with open(filename, "a") as f:
             f.write(msg + "\n")
 
-class SoftmaxBHMReconAlgorithm:
+class VPRISMAlgorithm:
     def __init__(
         self, 
         grid_len: float, 
@@ -121,7 +121,7 @@ class SoftmaxBHMReconAlgorithm:
     def predict(self, x: Tensor) -> Tensor:
         return self.bhm.predict(x.to(self.device)).to(torch.device("cpu"))
     
-class SoftmaxBHMReconNoUnderTableAlgorithm:
+class VPRISMNoUnderTableAlgorithm:
     def __init__(
         self, 
         grid_len: float, 
@@ -190,7 +190,7 @@ class SoftmaxBHMReconNoUnderTableAlgorithm:
         return self.bhm.predict(x.to(self.device)).to(torch.device("cpu"))
 
 
-class SoftmaxBHMReconNoStratifiedAlgorithm:
+class VPRISMNoStratifiedAlgorithm:
     def __init__(
         self, 
         grid_len: float, 
@@ -264,7 +264,7 @@ class SoftmaxBHMReconNoStratifiedAlgorithm:
         return self.bhm.predict(x.to(self.device)).to(torch.device("cpu"))
     
 
-class SoftmaxBHMReconAlgorithmBadSampling:
+class VPRISMAlgorithmBadSampling:
     def __init__(
         self, 
         grid_len: float, 
@@ -321,84 +321,6 @@ class SoftmaxBHMReconAlgorithmBadSampling:
     def predict(self, x: Tensor) -> Tensor:
         return self.bhm.predict(x.to(self.device)).to(torch.device("cpu"))
 
-
-class SigmoidBHMsReconAlgorithm:
-    def __init__(
-        self, 
-        grid_len: float, 
-        grid_dist_from_obj: float, 
-        kernel_param: float,
-        ray_step_size: float,
-        object_sphere_radius: float,
-        scene_sphere_radius: float,
-        subsample_grid_size_occ: float,
-        subsample_grid_size_unocc: float,
-        num_surface_points_per_obj: int,
-        device: torch.device = device
-    ) -> None:
-        self.grid_len = grid_len
-        self.grid_dist_from_obj = grid_dist_from_obj
-        self.kernel_param = kernel_param
-        self.ray_step_size = ray_step_size
-        self.object_sphere_radius = object_sphere_radius
-        self.scene_sphere_radius = scene_sphere_radius
-        self.subsample_grid_size_occ = subsample_grid_size_occ
-        self.subsample_grid_size_unocc = subsample_grid_size_unocc
-        self.device = device
-        self.num_surface_points = num_surface_points_per_obj
-        self.conf = 0.5
-        self.bhms = None
-
-    def fit(self, scene: Scene) -> None:
-        hinge_points = generate_hingepoint_grid_multiple_objects_w_surface(
-            scene.points, scene.seg_mask, self.grid_len, self.grid_dist_from_obj, self.num_surface_points
-        )
-        print(f"hinge_points: {hinge_points.shape}")
-        kernel = GaussianKernel(self.kernel_param)
-        num_objects = int(torch.amax(scene.seg_mask).item())
-        # (2) create bhm
-        bhms = [(
-            BayesianHilbertMapWithFullCovarianceMatrixNoInv(
-                hinge_points=hinge_points,
-                kernel=kernel,
-                num_iterations=3,
-                # num_iterations_initial=5,
-            ).to(self.device)
-        ) for i in range(num_objects)]
-        # (3) neg sampling on data
-        scene_center = 0.5 * (
-            torch.amax(scene.points[scene.seg_mask > 0], dim=0) 
-            + torch.amin(scene.points[scene.seg_mask > 0], dim=0)
-        )
-        X, y = negative_sample_rays_in_sphere_uniform_each_step_multiclass(
-            points=scene.points, 
-            mask=scene.seg_mask, 
-            step_size=self.ray_step_size, 
-            radius=self.object_sphere_radius, 
-            camera_pos=scene.camera_pos,
-        )
-        plane = robust_ransac(scene.points, scene.seg_mask, 100, dist_tol=0.01, radius=self.scene_sphere_radius)
-        X, y = add_negative_points_below_plane_multiple_objects(
-            X, y, plane=[*list(plane.normal_vect), -plane.bias], center=scene_center, radius=self.scene_sphere_radius, k=10000
-        )
-    
-        X, y = grid_subsample_different_res(
-            X, 
-            y, 
-            subsample_grid_size_unocc=self.subsample_grid_size_unocc, 
-            subsample_grid_size_occ=self.subsample_grid_size_occ
-        )
-        print(f"X: {X.shape}")
-        # (4) fit bhm
-        for i, bhm in enumerate(bhms):
-            bhm.sequential_update(X.to(self.device), (y == i+1).to(self.device), 10000)
-        self.bhms = bhms
-
-    def predict(self, x: Tensor) -> Tensor:
-        preds = torch.stack([bhm.predict(x.to(self.device)).to(torch.device("cpu")) for bhm in self.bhms], dim=1)  # (P, C-1)
-        empty_pred = 1 - torch.sum(preds, dim=1, keepdim=True)  # (P, 1)
-        preds = torch.concatenate([empty_pred, preds], dim=1)  # (P, C)
-        return preds
 
 class VoxelBaselineAlgorithm:
     def __init__(
@@ -537,8 +459,8 @@ class NeuralNetworkAlgorithm:
 
 
 # (3) load stuff
-if args.algorithm == "bhm":
-    algo = SoftmaxBHMReconAlgorithm(
+if args.algorithm == "vprism":
+    algo = VPRISMAlgorithm(
         grid_len=0.05,
         grid_dist_from_obj=0.15,
         kernel_param=1000,
@@ -550,7 +472,7 @@ if args.algorithm == "bhm":
         scene_sphere_radius=0.4,
     )
 elif args.algorithm == "no_stratified":
-    algo = SoftmaxBHMReconNoStratifiedAlgorithm(
+    algo = VPRISMNoStratifiedAlgorithm(
         grid_len=0.05,
         grid_dist_from_obj=0.15,
         kernel_param=1000,
@@ -562,7 +484,7 @@ elif args.algorithm == "no_stratified":
         scene_sphere_radius=0.4,
     )
 elif args.algorithm == "no_under_table":
-    algo = SoftmaxBHMReconNoUnderTableAlgorithm(
+    algo = VPRISMNoUnderTableAlgorithm(
         grid_len=0.05,
         grid_dist_from_obj=0.15,
         kernel_param=1000,
@@ -574,25 +496,13 @@ elif args.algorithm == "no_under_table":
         scene_sphere_radius=0.4,
     )
 elif args.algorithm == "bad_sampling":
-    algo = SoftmaxBHMReconAlgorithmBadSampling(
+    algo = VPRISMAlgorithmBadSampling(
         grid_len=0.05,
         grid_dist_from_obj=0.15,
         kernel_param=1000,
         ray_step_size=0.1,
         object_sphere_radius=0.25,
         subsample_grid_size=0.015,
-        num_surface_points_per_obj=32,
-        scene_sphere_radius=0.4,
-    )
-elif args.algorithm == "sigmoid":
-    algo = SigmoidBHMsReconAlgorithm(
-        grid_len=0.05,
-        grid_dist_from_obj=0.15,
-        kernel_param=1000,
-        ray_step_size=0.1,
-        object_sphere_radius=0.25,
-        subsample_grid_size_occ=0.01,
-        subsample_grid_size_unocc=0.015,
         num_surface_points_per_obj=32,
         scene_sphere_radius=0.4,
     )

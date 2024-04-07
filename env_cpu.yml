@@ -6,6 +6,7 @@ channels:
 - defaults
 dependencies:
 - python>=3.10
+- pytorch::pytorch
 - numpy
 - matplotlib
 - scipy
@@ -13,10 +14,9 @@ dependencies:
 - tqdm
 - trimesh
 - scikit-image
-- pytorch::pytorch
 - jupyter
-- pyg::pyg
 - pyg::pytorch-cluster
+- pyg::pyg
 - conda-forge::rtree
 - opencv
 - pytorch::torchvision
