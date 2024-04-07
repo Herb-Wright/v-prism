@@ -1,0 +1,44 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <slot name='head' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-800 font-styles">
+	<div class="w-full bg-zinc-800 text-white sticky top-0 z-50 h-14 md:h-14 flex justify-between items-center px-8 shadow-lg">
+        <a href="/">
+            <div  class="text-2xl tracking-wide">V-PRISM</div>
+        </a>
+        <div class="flex justify-end gap-8 p-2 sm:p-8">
+            {
+                [{label: "Home", link: "/v-prism/"}, {label: "Docs", link: "/v-prism/docs"}].map(data =>(
+                    <a href={data.link}>
+                        <div  class="text-xl flex items-center justify-center hover:text-rose-200 rounded-full underline">
+                            {data.label}
+                        </div>
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+    <slot/>
+</body>
+<html>
+<style>
+.font-styles {
+    font-family: "Roboto", sans-serif;
+}
+</style>
+
+
+
+

@@ -1,14 +1,14 @@
 
 # V-PRISM: Probabilistic Mapping of Unknown Tabletop Scenes
 
-![](./docs/imgs/fig1.png)
+![](./docs/src/images/fig1.png)
 
 
 ## Overview
 
 This is the code for the paper "V-PRISM: Probabilistic Mapping of Unknown Tabletop Scenes". Our method builds a 3D probabilistic map of a tabletop scene by using a feature transform and performing an EM algorithm. We employ a novel negative sampling technique before our feature transform to fully encode information about the scene. Our method not only reconstructs the scene accurately, but encodes valuable information about uncertainty due to occlusion. In our paper, we perform both qualitative and quantitative experiments to verify these claims. See below for a figure outlining our method.
 
-![](./docs/imgs/fig2.png)
+![](./docs/src/images/fig2.png)
 
 
 ## Usage
