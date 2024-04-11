@@ -23,6 +23,7 @@ def full_VPRISM_method(
     num_surface_points_per_obj=32,
     scene_sphere_radius=0.4,
     device=torch.device("cpu"),
+    max_points_in_update=20000,
 ) -> VPRISM:
     hinge_points = generate_hingepoint_grid_multiple_objects_w_surface(
         points, 
@@ -44,6 +45,6 @@ def full_VPRISM_method(
         subsample_grid_size_unocc,
         subsample_grid_size_occ,
     )
-    map.update(X.to(device), y.to(device))
+    map.sequential_update(X.to(device), y.to(device), max_points_in_update=max_points_in_update)
     return map
 

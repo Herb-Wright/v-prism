@@ -11,6 +11,7 @@ import torch
 from ..settings import DATA_DIR
 from ..utils.data_download import download_file_from_google_drive, unzip_tar_file
 from .scene import Scene
+from ..utils.ui import abspath
 
 
 # https://drive.google.com/file/d/1-4KgO3pz7h-sMy7VgjZID6RuzMpCywBm/view?usp=drive_link
@@ -53,7 +54,7 @@ class ReconBulletDataset:
         keep_camera_at_origin: bool = False
     ) -> None:
         self.keep_camera_at_origin = keep_camera_at_origin
-        self.dataset_dir = os.path.join(data_dir, dataset_name)
+        self.dataset_dir = os.path.join(abspath(data_dir), dataset_name)
         self.datafiles = [(
             os.path.join(self.dataset_dir, scene)
         ) for scene in os.listdir(self.dataset_dir) if os.path.isdir(os.path.join(self.dataset_dir, scene))]
