@@ -194,7 +194,7 @@ class BayesianHilbertMapWithFullCovarianceMatrixNoInv:
             
             # M step
             feats_sig_feats = torch.sum(torch.linalg.solve(sigma_inv.T, feats.T).T * feats, dim=1)
-            xi = torch.sqrt( + (feats @ mu) ** 2 )
+            xi = torch.sqrt(feats_sig_feats + (feats @ mu) ** 2 )
             
         self.sigma_inv = sigma_inv  # (H+1, H+1)
         self.mu = mu  # (H+1,)
